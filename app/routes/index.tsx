@@ -8,13 +8,15 @@ const filePath_2 = "count_2.txt";
 
 async function readCount() {
 	return Number.parseInt(
-		await fs.promises.readFile(filePath, "utf-8").catch(() => "0"),
+		localStorage.getItem("count") || "0",
+		// await fs.promises.readFile(filePath, "utf-8").catch(() => "0"),
 	);
 }
 
 async function readCount_2() {
 	return Number.parseInt(
-		await fs.promises.readFile(filePath_2, "utf-8").catch(() => "0"),
+		localStorage.getItem("count_2") || "0",
+		// await fs.promises.readFile(filePath_2, "utf-8").catch(() => "0"),
 	);
 }
 
@@ -28,12 +30,14 @@ const getCount_2 = createServerFn("GET", () => {
 
 const updateCount = createServerFn("POST", async (addBy: number) => {
 	const count = await readCount();
-	await fs.promises.writeFile(filePath, `${count + addBy}`);
+	localStorage.setItem("count", `${count + addBy}`);
+	// await fs.promises.writeFile(filePath, `${count + addBy}`);
 });
 
 const updateCount_2 = createServerFn("POST", async (addBy: number) => {
 	const count = await readCount_2();
-	await fs.promises.writeFile(filePath_2, `${count + addBy}`);
+	localStorage.setItem("count_2", `${count + addBy}`);
+	// await fs.promises.writeFile(filePath_2, `${count + addBy}`);
 });
 
 export const Route = createFileRoute("/")({
